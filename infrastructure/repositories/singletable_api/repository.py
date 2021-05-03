@@ -4,7 +4,7 @@ from typing import List
 from aiohttp import ClientResponseError
 
 from core.singletable_api.dto import DepartmentEntity
-from core.singletable_api.exceptions import DepartmentNotFound, DepartmentNotCreated
+from core.singletable_api.exceptions import DepartmentNotFound, DepartmentNotCreated, DepartmentNotUpdate
 from core.singletable_api.repository import SingletableUniversityApiBase
 from infrastructure.repositories.client_template import validators
 from infrastructure.repositories.client_template.template import ApiRepository
@@ -39,8 +39,10 @@ class SingletableUniversityApi(SingletableUniversityApiBase, ApiRepository):
         return validators.validate_dict(response=response, base_model=DepartmentEntity)
 
     async def department_update_by_id(self, department: DepartmentEntity) -> DepartmentEntity:
+        if department.id is None:
+            raise DepartmentNotUpdate
         await self._request(
-            method="UPDATE",
+            method="PUT",
             path="app/departments",
             params={"id": department.id},
             json=department.to_dict(),
@@ -49,11 +51,13 @@ class SingletableUniversityApi(SingletableUniversityApiBase, ApiRepository):
         return department
 
     async def department_update_by_ext_id(self, department: DepartmentEntity) -> DepartmentEntity:
+        if department.id is None:
+            raise DepartmentNotUpdate
         await self._request(
-            method="UPDATE",
+            method="PUT",
             path="app/departments",
             params={"ext-id": department.extId},
-            json=department.to_dict(),
+            json=department.to_update_by_ext_id(),
             no_response=True,
         )
         return department

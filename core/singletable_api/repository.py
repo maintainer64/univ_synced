@@ -32,8 +32,14 @@ class SingletableUniversityApiBase(ABC):
 
     @abstractmethod
     async def department_update_by_id(self, department: DepartmentEntity) -> DepartmentEntity:
+        """
+        :raises: DepartmentNotUpdate
+        """
         ...
 
     @abstractmethod
     async def department_update_by_ext_id(self, department: DepartmentEntity) -> DepartmentEntity:
+        """
+        :raises: DepartmentNotUpdate
+        """
         ...
