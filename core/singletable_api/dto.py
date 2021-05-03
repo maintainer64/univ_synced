@@ -14,3 +14,14 @@ class DepartmentEntity(BaseModel):
         if self.parentExtId:
             data["parentExtId"] = self.parentExtId
         return data
+
+    def to_update_by_ext_id(self):
+        data = self.dict(exclude={"id"})
+        if self.parentExtId:
+            data["parentExtId"] = self.parentExtId
+        return data
+
+    def update(self, obj: "DepartmentEntity") -> "DepartmentEntity":
+        for field in ("name", "extId", "parentExtId"):
+            setattr(self, field, getattr(obj, field))
+        return self

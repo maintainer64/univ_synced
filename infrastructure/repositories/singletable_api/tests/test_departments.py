@@ -2,7 +2,7 @@ import pytest
 from aiohttp import ClientResponseError
 
 from core.singletable_api.dto import DepartmentEntity
-from core.singletable_api.exceptions import DepartmentNotFound, DepartmentNotCreated
+from core.singletable_api.exceptions import DepartmentNotFound, DepartmentNotCreated, DepartmentNotUpdate
 from core.singletable_api.repository import SingletableUniversityApiBase
 
 
@@ -112,4 +112,17 @@ async def test_fail_update_department(
     mock_request_returned_value(repository, status=status, answer=False)
     caller = getattr(repository, method)
     with pytest.raises(ClientResponseError):
+        await caller(department=department_item)
+
+
+@pytest.mark.parametrize("method", ("department_update_by_id", "department_update_by_ext_id"))
+@pytest.mark.parametrize("status", (404, 500))
+@pytest.mark.asyncio
+async def test_fail_update_department_on_none_id(
+    repository: SingletableUniversityApiBase, mock_request_returned_value, status, department_item, method
+):
+    department_item.id = None
+    mock_request_returned_value(repository, status=status, answer=False)
+    caller = getattr(repository, method)
+    with pytest.raises(DepartmentNotUpdate):
         await caller(department=department_item)
