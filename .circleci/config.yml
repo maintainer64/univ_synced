@@ -29,12 +29,10 @@ jobs:
     executor: python/default
     steps:
       - checkout
+      - python/load-cache
       - run:
           name: Publish version
-          command: python3 -m pip install python-semantic-release && semantic-release publish
-          environment:
-            CIRCLECI: true
-            GH_TOKEN: $GH_TOKEN
+          command: python3 tags.py
 workflows:
   build_and_test:
     jobs:
