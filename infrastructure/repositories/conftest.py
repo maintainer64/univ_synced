@@ -13,9 +13,7 @@ def mock_request_returned_value():
         if 400 <= status:
             api_repo.session.request = CoroutineMock(
                 side_effect=ClientResponseError(
-                    status=status,
-                    request_info=RequestInfo(url="/", method="", headers=dict()),
-                    history=(),
+                    status=status, request_info=RequestInfo(url="/", method="", headers=dict()), history=(),
                 )
             )
         else:

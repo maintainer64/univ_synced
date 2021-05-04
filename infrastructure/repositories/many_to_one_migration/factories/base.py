@@ -25,9 +25,7 @@ class ManyToOneMigrationTemplate(ManyToOneMigrationBase, ABC):
 
         for entity in entity_list:
             try:
-                entity_caste = await self._caste(
-                    entity_data=entity,
-                )
+                entity_caste = await self._caste(entity_data=entity,)
                 await self._save(entity_data=entity_caste)
                 counter.success += 1
             except Exception as err:
@@ -38,9 +36,7 @@ class ManyToOneMigrationTemplate(ManyToOneMigrationBase, ABC):
     async def migrate_by_id(self, identifier: int) -> bool:
         try:
             entity = await self._get_item(identifier=identifier)
-            entity_caste = await self._caste(
-                entity_data=entity,
-            )
+            entity_caste = await self._caste(entity_data=entity,)
             await self._save(entity_data=entity_caste)
             return True
         except Exception as err:

@@ -10,13 +10,5 @@ class ServiceClientContainer(containers.DeclarativeContainer):
 
     configs = providers.Configuration()
 
-    multi = providers.Factory(
-        MultitableUniversityApi,
-        base_url=configs.api_multi_url,
-        session=aio,
-    )
-    single = providers.Factory(
-        SingletableUniversityApi,
-        base_url=configs.api_single_url,
-        session=aio,
-    )
+    multi = providers.Factory(MultitableUniversityApi, base_url=configs.api_multi_url, session=aio,)
+    single = providers.Factory(SingletableUniversityApi, base_url=configs.api_single_url, session=aio,)

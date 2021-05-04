@@ -8,12 +8,7 @@ from infrastructure.repositories.multitable_api.repository import MultitableUniv
 
 @pytest.fixture()
 def group_item() -> GroupEntity:
-    return GroupEntity(
-        name="ФТ-21001",
-        id=1618258658507,
-        faculty=1618258396481,
-        department=1618258474887,
-    )
+    return GroupEntity(name="ФТ-21001", id=1618258658507, faculty=1618258396481, department=1618258474887,)
 
 
 @pytest.mark.parametrize(

@@ -17,11 +17,7 @@ def counter_mock() -> MigratedCountingDTO:
 def use_case(counter_mock) -> FullManyToOneMigrationUseCase:
     mock = Mock(spec=ManyToOneMigrationBase)
     mock.migrate = CoroutineMock(return_value=counter_mock)
-    return FullManyToOneMigrationUseCase(
-        faculty_migrate=mock,
-        deps_migrate=mock,
-        groups_migrate=mock,
-    )
+    return FullManyToOneMigrationUseCase(faculty_migrate=mock, deps_migrate=mock, groups_migrate=mock,)
 
 
 @pytest.mark.asyncio

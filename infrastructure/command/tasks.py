@@ -5,7 +5,5 @@ from infrastructure.dependencies.application_container import ApplicationDepende
 
 
 @inject
-async def run(
-    use_case: FullManyToOneMigrationUseCase = Provide[DD.migration_service_many_to_one_use_cases.full],
-):
+async def run(use_case: FullManyToOneMigrationUseCase = Provide[DD.migration_service_many_to_one_use_cases.full],):
     await use_case.execute()

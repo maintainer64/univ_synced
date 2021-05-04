@@ -28,11 +28,7 @@ class ApiRepository(ABC):
         return response
 
     async def _request(
-        self,
-        method: str,
-        path: typing.Optional[str] = None,
-        no_response: bool = False,
-        **params,
+        self, method: str, path: typing.Optional[str] = None, no_response: bool = False, **params,
     ) -> typing.Any:
         """Выполнить запрос.
 

@@ -21,12 +21,7 @@ def data_multi_faculty() -> FacultyEntity:
 
 @pytest.fixture()
 def data_single_no_id_faculty() -> SingleDepartmentEntity:
-    return SingleDepartmentEntity(
-        id=None,
-        name="Металлургический",
-        extId="1",
-        parentExtId="root",
-    )
+    return SingleDepartmentEntity(id=None, name="Металлургический", extId="1", parentExtId="root",)
 
 
 @pytest.fixture()
@@ -48,12 +43,7 @@ def data_multi_department() -> DepartmentEntity:
 
 @pytest.fixture()
 def data_single_no_id_department() -> SingleDepartmentEntity:
-    return SingleDepartmentEntity(
-        id=None,
-        name="ТФКП",
-        extId="100",
-        parentExtId="900",
-    )
+    return SingleDepartmentEntity(id=None, name="ТФКП", extId="100", parentExtId="900",)
 
 
 @pytest.fixture()
@@ -75,12 +65,7 @@ def data_multi_group() -> GroupEntity:
 
 @pytest.fixture()
 def data_single_no_id_group() -> SingleDepartmentEntity:
-    return SingleDepartmentEntity(
-        id=None,
-        name="АБС-101010",
-        extId="657",
-        parentExtId="100",
-    )
+    return SingleDepartmentEntity(id=None, name="АБС-101010", extId="657", parentExtId="100",)
 
 
 @pytest.fixture()

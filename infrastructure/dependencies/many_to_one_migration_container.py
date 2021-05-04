@@ -11,19 +11,11 @@ class ManyToOneMigrationContainer(containers.DeclarativeContainer):
     clients_repository: ServiceClientContainer = providers.DependenciesContainer()
 
     faculty = providers.Factory(
-        ManyToOneMigrationFaculties,
-        multi=clients_repository.multi,
-        single=clients_repository.single,
+        ManyToOneMigrationFaculties, multi=clients_repository.multi, single=clients_repository.single,
     )
-    deps = providers.Factory(
-        ManyToOneMigrationDeps,
-        multi=clients_repository.multi,
-        single=clients_repository.single,
-    )
+    deps = providers.Factory(ManyToOneMigrationDeps, multi=clients_repository.multi, single=clients_repository.single,)
     groups = providers.Factory(
-        ManyToOneMigrationGroups,
-        multi=clients_repository.multi,
-        single=clients_repository.single,
+        ManyToOneMigrationGroups, multi=clients_repository.multi, single=clients_repository.single,
     )
 
 

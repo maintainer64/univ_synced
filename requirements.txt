@@ -21,3 +21,4 @@ six==1.15.0
 toml==0.10.2
 typing-extensions==3.7.4.3
 yarl==1.6.3
+black==19.10b0

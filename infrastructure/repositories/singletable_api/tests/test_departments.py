@@ -25,12 +25,7 @@ def department_item(request):
     "responses",
     (
         [
-            {
-                "parentExtId": "1618258396481",
-                "name": "kdjskdlfsd",
-                "extId": "1618258396481",
-                "id": 1618258396481,
-            },
+            {"parentExtId": "1618258396481", "name": "kdjskdlfsd", "extId": "1618258396481", "id": 1618258396481},
             {"parentExtId": "1618258396481", "name": "Хлебопекарня", "extId": "1618258568955", "id": 1618511293640},
         ],
         [],

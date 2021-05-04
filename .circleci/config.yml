@@ -1,0 +1,52 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@0.2.1
+
+jobs:
+  black:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - python/install-deps
+      - python/save-cache
+      - run: pip3 install black==19.10b0 && python3 -m black -l 120 -t py38 --check .
+  pytest:
+    executor: python/default
+    steps:
+      - checkout
+      - python/load-cache
+      - run: mkdir test-results
+      - run:
+          name: run tests
+          command: python3 -m pytest -vvv --trace-config -p no:warnings --junitxml=test-results/junit.xml
+      - store_test_results:
+          path: test-results
+      - store_artifacts:
+          path: test-results
+  publish-github-release:
+    executor: python/default
+    steps:
+      - checkout
+      - run:
+          name: Publish version
+          command: python3 -m pip install python-semantic-release && semantic-release publish
+          environment:
+            CIRCLECI: true
+            GH_TOKEN: $GH_TOKEN
+workflows:
+  build_and_test:
+    jobs:
+      - black
+      - pytest:
+          requires:
+            - black
+      - publish-github-release:
+          requires:
+            - pytest
+          filters:
+            branches:
+              only: main
+            tags:
+              only: /^\d+\.\d+\.\d+$/
