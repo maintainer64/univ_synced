@@ -4,6 +4,31 @@ from unittest.mock import Mock
 from aiohttp import ClientResponse, ClientResponseError, RequestInfo
 from asynctest import CoroutineMock
 
+from core.multi_facade_repository.repository import MultiFacadeRepositoryBase
+from core.multitable_api.repository import MultitableUniversityApiBase
+from core.singletable_api.repository import SingletableUniversityApiBase
+from core.tree_single_entity_related.repository import TreeRelatedSingleEntityBase
+
+
+@pytest.fixture()
+def mock_single() -> SingletableUniversityApiBase:
+    return Mock(spec=SingletableUniversityApiBase)
+
+
+@pytest.fixture()
+def mock_multi() -> MultitableUniversityApiBase:
+    return Mock(spec=MultitableUniversityApiBase)
+
+
+@pytest.fixture()
+def mock_tree_single() -> TreeRelatedSingleEntityBase:
+    return Mock(spec=TreeRelatedSingleEntityBase)
+
+
+@pytest.fixture()
+def mock_multi_facade() -> MultiFacadeRepositoryBase:
+    return Mock(spec=MultiFacadeRepositoryBase)
+
 
 @pytest.fixture()
 def mock_request_returned_value():

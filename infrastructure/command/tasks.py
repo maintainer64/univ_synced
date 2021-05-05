@@ -1,6 +1,6 @@
 from dependency_injector.wiring import inject, Provide
 
-from core.many_to_one_migration.application.use_cases.full_migration import FullManyToOneMigrationUseCase
+from core.any_migration.application.use_cases.full_migration import FullManyToOneMigrationUseCase
 from infrastructure.dependencies.application_container import ApplicationDependenciesContainer as DD
 
 

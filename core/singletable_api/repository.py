@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from core.singletable_api.dto import DepartmentEntity
+from core.singletable_api.entities import DepartmentEntity
 
 
 class SingletableUniversityApiBase(ABC):

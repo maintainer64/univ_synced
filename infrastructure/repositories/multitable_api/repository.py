@@ -3,7 +3,7 @@ from typing import List
 
 from aiohttp import ClientResponseError
 
-from core.multitable_api.dto import DepartmentEntity, FacultyEntity, GroupEntity
+from core.multitable_api.entities import DepartmentEntity, FacultyEntity, GroupEntity
 from core.multitable_api.exceptions import DepartmentEntityNotFound, FacultyEntityNotFound, GroupEntityNotFound
 from core.multitable_api.repository import MultitableUniversityApiBase
 from infrastructure.repositories.client_template import validators
@@ -30,7 +30,7 @@ class MultitableUniversityApi(MultitableUniversityApiBase, ApiRepository):
 
     async def faculty_update(self, faculty: FacultyEntity) -> FacultyEntity:
         await self._request(
-            method="UPDATE",
+            method="PUT",
             path="app/faculties",
             params={"id": faculty.id},
             json=faculty.dict(exclude={"id"}),
@@ -55,8 +55,8 @@ class MultitableUniversityApi(MultitableUniversityApiBase, ApiRepository):
 
     async def department_update(self, department: DepartmentEntity) -> DepartmentEntity:
         await self._request(
-            method="UPDATE",
-            path="app/faculties",
+            method="PUT",
+            path="app/deps",
             params={"id": department.id},
             json=department.dict(exclude={"id"}),
             no_response=True,
@@ -80,10 +80,6 @@ class MultitableUniversityApi(MultitableUniversityApiBase, ApiRepository):
 
     async def group_update(self, group: GroupEntity) -> GroupEntity:
         await self._request(
-            method="UPDATE",
-            path="app/groups",
-            params={"id": group.id},
-            json=group.dict(exclude={"id"}),
-            no_response=True,
+            method="PUT", path="app/groups", params={"id": group.id}, json=group.dict(exclude={"id"}), no_response=True,
         )
         return group

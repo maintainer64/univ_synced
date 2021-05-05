@@ -2,15 +2,17 @@ import logging
 from abc import ABC, abstractmethod
 from typing import List, Any
 
-from core.many_to_one_migration.dto import MigratedCountingDTO
-from core.many_to_one_migration.application.repository import ManyToOneMigrationBase
+from core.any_migration.dto import MigratedCountingDTO
+from core.any_migration.application.repository import AnyMigrationBase, AnySaver, AnyCaster
 from core.multitable_api.repository import MultitableUniversityApiBase
 from core.singletable_api.exceptions import DepartmentNotCreated
 from core.singletable_api.repository import SingletableUniversityApiBase
-from core.singletable_api.dto import DepartmentEntity as SingleDepartmentEntity
+from core.singletable_api.entities import DepartmentEntity as SingleDepartmentEntity
 
 
-class ManyToOneMigrationTemplate(ManyToOneMigrationBase, ABC):
+class ManyToOneMigrationTemplate(
+    AnyMigrationBase, AnySaver[SingleDepartmentEntity], AnyCaster[Any, SingleDepartmentEntity], ABC
+):
     def __init__(self, multi: MultitableUniversityApiBase, single: SingletableUniversityApiBase):
         self.multi = multi
         self.single = single
@@ -25,8 +27,8 @@ class ManyToOneMigrationTemplate(ManyToOneMigrationBase, ABC):
 
         for entity in entity_list:
             try:
-                entity_caste = await self._caste(entity_data=entity,)
-                await self._save(entity_data=entity_caste)
+                entity_caste = await self.caste(entity_data=entity)
+                await self.save(entity_data=entity_caste)
                 counter.success += 1
             except Exception as err:
                 counter.error += 1
@@ -36,8 +38,8 @@ class ManyToOneMigrationTemplate(ManyToOneMigrationBase, ABC):
     async def migrate_by_id(self, identifier: int) -> bool:
         try:
             entity = await self._get_item(identifier=identifier)
-            entity_caste = await self._caste(entity_data=entity,)
-            await self._save(entity_data=entity_caste)
+            entity_caste = await self.caste(entity_data=entity)
+            await self.save(entity_data=entity_caste)
             return True
         except Exception as err:
             logging.exception("Error migrate item in ManyToOneMigration", extra={"error": err})
@@ -52,13 +54,13 @@ class ManyToOneMigrationTemplate(ManyToOneMigrationBase, ABC):
         ...
 
     @abstractmethod
-    async def _caste(self, entity_data: Any) -> SingleDepartmentEntity:
+    async def caste(self, entity_data: Any) -> SingleDepartmentEntity:
         ...
 
-    async def _save(self, entity_data: SingleDepartmentEntity):
+    async def save(self, entity_data: SingleDepartmentEntity) -> SingleDepartmentEntity:
         try:
-            await self.single.department_create(department=entity_data)
+            return await self.single.department_create(department=entity_data)
         except DepartmentNotCreated:
             entity_data_single = await self.single.department_get_by_ext_id(ext_identifier=entity_data.extId)
             entity_data_single.update(entity_data)
-            await self.single.department_update_by_id(department=entity_data_single)
+            return await self.single.department_update_by_id(department=entity_data_single)

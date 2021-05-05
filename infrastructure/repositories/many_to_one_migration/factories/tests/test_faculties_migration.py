@@ -1,8 +1,8 @@
 import pytest
 from asynctest import CoroutineMock
 
-from core.multitable_api.dto import FacultyEntity, DepartmentEntity, GroupEntity
-from core.singletable_api.dto import DepartmentEntity as SingleDepartmentEntity
+from core.multitable_api.entities import FacultyEntity, DepartmentEntity, GroupEntity
+from core.singletable_api.entities import DepartmentEntity as SingleDepartmentEntity
 from core.singletable_api.exceptions import DepartmentNotFound, DepartmentNotCreated
 from infrastructure.repositories.many_to_one_migration.factories.deps import ManyToOneMigrationDeps
 from infrastructure.repositories.many_to_one_migration.factories.faculties import ManyToOneMigrationFaculties

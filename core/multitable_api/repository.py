@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from core.multitable_api.dto import DepartmentEntity, FacultyEntity, GroupEntity
+from core.multitable_api.entities import DepartmentEntity, FacultyEntity, GroupEntity
 
 
 class MultitableUniversityApiBase(ABC):

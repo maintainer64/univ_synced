@@ -1,7 +1,7 @@
 import pytest
 
 from aiohttp import ClientResponseError
-from core.multitable_api.dto import GroupEntity
+from core.multitable_api.entities import GroupEntity
 from core.multitable_api.exceptions import GroupEntityNotFound
 from infrastructure.repositories.multitable_api.repository import MultitableUniversityApi
 

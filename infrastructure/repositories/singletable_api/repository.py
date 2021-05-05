@@ -3,7 +3,7 @@ from typing import List
 
 from aiohttp import ClientResponseError
 
-from core.singletable_api.dto import DepartmentEntity
+from core.singletable_api.entities import DepartmentEntity
 from core.singletable_api.exceptions import DepartmentNotFound, DepartmentNotCreated, DepartmentNotUpdate
 from core.singletable_api.repository import SingletableUniversityApiBase
 from infrastructure.repositories.client_template import validators
