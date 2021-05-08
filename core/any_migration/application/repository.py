@@ -5,6 +5,7 @@ from typing import TypeVar, Generic
 TCastleObject = TypeVar("TCastleObject")
 TOutCastleObject = TypeVar("TOutCastleObject")
 TSaverObject = TypeVar("TSaverObject")
+TUseCaseDTO = TypeVar("TUseCaseDTO")
 
 
 class AnyMigrationBase(ABC):
@@ -26,4 +27,10 @@ class AnyCaster(Generic[TCastleObject, TOutCastleObject]):
 class AnySaver(Generic[TSaverObject]):
     @abstractmethod
     async def save(self, entity: TSaverObject) -> TSaverObject:
+        ...
+
+
+class UseCase(Generic[TUseCaseDTO]):
+    @abstractmethod
+    async def execute(self, input_dto: TUseCaseDTO):
         ...
