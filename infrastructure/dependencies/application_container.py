@@ -7,6 +7,7 @@ from infrastructure.dependencies.many_to_one_migration_container import (
 )
 from infrastructure.dependencies.multi_facade_container import MultiFacadeContainer
 from infrastructure.dependencies.one_to_many_migration_container import OneToManyMigrationContainer
+from infrastructure.dependencies.proxy_sendler_container import ProxySendContainer
 from infrastructure.dependencies.tree_single_entity_container import TreeRelatedSingleEntityContainer
 from infrastructure.dependencies.utils import session_maker
 
@@ -26,3 +27,4 @@ class ApplicationDependenciesContainer(containers.DeclarativeContainer):
     migration_service_one_to_many = providers.Container(
         OneToManyMigrationContainer, clients_repository=clients, multi_facade=multi_facade,
     )
+    proxy_sendler = providers.Container(ProxySendContainer, aio=aio, configs=configs)
