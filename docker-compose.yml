@@ -2,11 +2,15 @@ version: '3.2'
 
 services:
   syncrolized_univ_app:
-    image: registry.russu.xyz:443/syncrolized_univ_app:1.0.1
+    image: registry.russu.xyz:443/syncrolized_univ_app:latest
     build:
       context: .
     container_name: syncrolized_univ
     restart: always
+    environment:
+      STATIC_DIRECTORY: /opt/app/statics
+      API_MULTI_URL: /
+      API_SINGLE_URL: /
     ports:
       - 8001:5000
     command: python3 -m infrastructure

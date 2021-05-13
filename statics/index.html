@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>jsTree test</title>
+  <!-- 2 load the theme CSS file -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+</head>
+<style type="text/css">
+  table{
+    width: 100%;
+  }
+  td{
+    width: 50%;
+    vertical-align: top;
+  }
+</style>
+<body>
+  <p>Загрузка ...</p>
+  <table>
+    <tr>
+      <th>Single-Core</th>
+      <th>Multi-Core</th>
+    </tr>
+    <tr>
+      <td>
+        <button ref='single'>Показать всё</button>
+        <br/>
+        <div id="single">
+          Загрузка ...
+        </div>
+      </td>
+      <td>
+        <button ref='multi'>Показать всё</button>
+        <br/>
+        <div id="multi">
+          Загрузка ...
+        </div>
+      </td>
+    </tr>
+  </table>
+
+  <!-- 4 include the jQuery library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+  <!-- 5 include the minified jstree source -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+  <script>
+  const single_url = 'https://single-univ.russu.xyz/';
+  const multi_url = 'https://multi-univ.russu.xyz/';
+  window.states = {
+    btn: {}
+  };
+  const get_data_single = async function(){
+      return await fetch(single_url + 'app/departments').then((response) => {
+        return response.json();
+    }).then((data) => {
+        return data;
+    }).then((data) => {
+        const new_data = data.map((item) => {
+            return {id: item.extId, parent: item.parentExtId ? item.parentExtId : '#', text: item.name}
+        });
+        return new_data;
+    });
+  }
+  const get_data_multi = async function(){
+    async function load(url){
+        return await fetch(multi_url + url).then((response) => {
+          return response.json();
+      }).then((data) => {
+            return data.map((item) => {
+              const parent_id = item.department ? item.department.toString() : item.faculty ? item.faculty.toString() : 'root'
+              return {id: item.id.toString(), parent: parent_id, text: item.name};
+          });
+      });
+    }
+    const faculty = await load("app/faculties");
+    const deps = await load("app/deps");
+    const groups = await load("app/groups");
+    const loads_data_array = [{id: 'root', parent: '#', text: "Университет"}]
+    return loads_data_array.concat(faculty).concat(deps).concat(groups);
+  }
+  const view_get_data_single = function(data){
+    $('#single').jstree({
+        'core' : {
+          'data' : data
+        }
+    });
+  }
+
+  const view_get_data_multi = function(data){
+    $('#multi').jstree({
+        'core' : {
+          'data' : data
+        }
+    });
+  }
+  const view_alert = function(data) {
+    $('p').text(data);
+  }
+
+  const init = async function(){
+      const single = await get_data_single();
+      view_get_data_single(single);
+      const multi = await get_data_multi();
+      view_get_data_multi(multi);
+      let arrTarget = single.map(JSON.stringify);
+      let arrOut =  multi.map(JSON.stringify).filter(e => !arrTarget.includes(e)).map(JSON.parse);
+      console.log(arrOut);
+      view_alert(arrOut.length === 0 ?'Синхронизировано': 'Не совпадает, подробнее в консоли');
+  };
+  $(document).ready(function () {
+    init();
+
+    $('button').click(function(){
+      const ref = $(this).attr('ref');
+
+      if (window.states.btn[ref] === undefined){
+        window.states.btn[ref] = true;
+      }
+      if (window.states.btn[ref]){
+        $('#'+ref).jstree().open_all(null, 200);
+        $(this).text("Скрыть всё");
+        window.states.btn[ref] = false;
+      } else {
+        $('#'+ref).jstree().close_all(null, 300);
+        window.states.btn[ref] = true;
+        $(this).text("Показать всё");
+      }
+    });
+  });
+  </script>
+</body>
+</html>
