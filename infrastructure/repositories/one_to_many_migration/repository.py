@@ -3,15 +3,15 @@ from typing import Dict
 
 
 from core.any_migration.dto import MigratedCountingDTO
-from core.any_migration.application.repository import AnyMigrationBase
 from core.multi_facade_repository.repository import MultiFacadeRepositoryBase
+from core.one_to_many_migration.repository import SingleMigrationBase
 from core.singletable_api.repository import SingletableUniversityApiBase
 from core.singletable_api.entities import DepartmentEntity as SingleDepartmentEntity
 
 logger = logging.getLogger(__name__)
 
 
-class OneToManyMigration(AnyMigrationBase):
+class OneToManyMigration(SingleMigrationBase):
     def __init__(self, single: SingletableUniversityApiBase, multi_facade: MultiFacadeRepositoryBase):
         self.multi_facade = multi_facade
         self.single = single
