@@ -1,7 +1,8 @@
 from dependency_injector.wiring import inject, Provide
 
 from core.any_migration.application.repository import AnyMigrationBase as Migrate
-from core.request_manager.dto import UpdateDataDTO, CreateDataDTO
+from core.one_to_many_migration.repository import SingleMigrationBase
+from core.request_manager.dto import UpdateDataDTO, CreateDataDTO, DepartmentUpdateExtDataDTO
 from infrastructure.repositories.request_manager import router
 from infrastructure.dependencies.application_container import ApplicationDependenciesContainer as DD
 
@@ -44,3 +45,23 @@ async def groups_create(request: CreateDataDTO, migrate: Migrate = Provide[DD.mi
 @inject
 async def groups_update(request: UpdateDataDTO, migrate: Migrate = Provide[DD.migration_service_many_to_one.groups]):
     await migrate.migrate_by_id(identifier=request.query.id)
+
+
+@router.route(path="/single/app/departments", val=CreateDataDTO, methods=["POST"])
+@inject
+async def departments_create(
+    request: CreateDataDTO, migrate: SingleMigrationBase = Provide[DD.migration_service_one_to_many.repository]
+):
+    await migrate.migrate_by_id(identifier=request.data.id)
+
+
+@router.route(path="/single/app/departments", val=DepartmentUpdateExtDataDTO, methods=["PUT"])
+@inject
+async def departments_update(
+    request: DepartmentUpdateExtDataDTO,
+    migrate: SingleMigrationBase = Provide[DD.migration_service_one_to_many.repository],
+):
+    if request.query.id is not None:
+        await migrate.migrate_by_id(identifier=request.query.id)
+    elif request.query.ext is not None:
+        await migrate.migrate_by_ext_id(identifier=request.query.ext)
