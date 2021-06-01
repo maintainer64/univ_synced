@@ -15,7 +15,7 @@
 
 #### Пример диаграммы непрерывной синхронизации сервисов:
 
-![GitHub Svg1](/univdoc/2.svg)
+![GitHub Svg3](/univdoc/3.svg)
 
 В схеме:
  - N - Nginx (ApiGetaway-proxy)
